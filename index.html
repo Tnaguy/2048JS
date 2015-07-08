@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <title>keydown demo</title>
+  <style>
+  fieldset {
+    margin-bottom: 1em;
+  }
+  input {
+    display: block;
+    margin-bottom: .25em;
+  }
+  #print-output {
+    width: 100%;
+  }
+  .print-output-line {
+    white-space: pre;
+    padding: 5px;
+    font-family: monaco, monospace;
+    font-size: .7em;
+  }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<style>html, body { border:0; margin:0; padding:0; }body { font-family: 'Helvetica', 'Arial',  'Verdana', 'sans-serif'; }</style></head>
+<body>
+ 
+<form>
+  <fieldset>
+    <label for="target">Type Something:</label>
+    <input id="target" type="text">
+  </fieldset>
+</form>
+<button id="other">
+  Trigger the handler
+</button>
+<table id="map">
+  <tr>
+    <td></td>
+    <td></td> 
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td> 
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td> 
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td> 
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+<script type="text/javascript" src="https://api.jquery.com/resources/events.js"></script>
+ 
+<script>window.onload = function() {
+
+for(i=0;i<4;i++) {
+  for(j=0;j<4;j++) {
+    $("#map tr:eq('" + i + "') td:eq('" + j + "')").html(0);
+  }
+}
+
+$("#map tr:eq('" + Math.floor(Math.random()*4) + "') td:eq('" + Math.floor(Math.random()*4) + "')").html((Math.floor((Math.random()*2)+1))*2);
+
+var xTriggered = 0;
+$( "body" ).keydown(function( event ) {
+  if ( event.which == 13 ) {
+   event.preventDefault();
+  }
+  if ( event.which == 38 ) {
+    
+	for(j=0;j<4;j++) { ...
+    if($("#map tr:eq(2) td:eq('" + j + "')").val() == 0) {
+	  $("#map tr:eq(2) td:eq('" + j + "')").html($("#map tr:eq(3) td:eq('" + j + "')").val());
+	}
+	if($("#map tr:eq(1) td:eq('" + j + "')").val() == 0) {
+	  $("#map tr:eq(1) td:eq('" + j + "')").html($("#map tr:eq(2) td:eq('" + j + "')").val());
+	}
+	
+    for(j=0;j<4;j++) {
+      if ($("#map tr:eq(0) td:eq('" + j + "')").val() == $("#map tr:eq(1) td:eq('" + j + "')").val()) {
+        $("#map tr:eq(0) td:eq('" + j + "')").html(2*$("#map tr:eq(0) td:eq('" + j + "')").val());
+	    $("#map tr:eq(1) td:eq('" + j + "')").html(0);
+	    if ($("#map tr:eq(2) td:eq('" + j + "')").val() == $("#map tr:eq(3) td:eq('" + j + "')").val()) {
+	      $("#map tr:eq(1) td:eq('" + j + "')").html(2*$("#map tr:eq(2) td:eq('" + j + "')").val());
+	      $("#map tr:eq(2) td:eq('" + j + "')").html(0);
+	    }
+	    else {
+	      $("#map tr:eq(1) td:eq('" + j + "')").html($("#map tr:eq(2) td:eq('" + j + "')").val());
+	      $("#map tr:eq(2) td:eq('" + j + "')").html($("#map tr:eq(3) td:eq('" + j + "')").val());
+	    }
+	    $("#map tr:eq(3) td:eq('" + j + "')").html(0);
+      }
+      else {
+        if ($("#map tr:eq(1) td:eq('" + j + "')").val() == $("#map tr:eq(2) td:eq('" + j + "')").val()) {
+          $("#map tr:eq(1) td:eq('" + j + "')").html(2*$("#map tr:eq(1) td:eq('" + j + "')").val());
+    	  $("#map tr:eq(2) td:eq('" + j + "')").html(0);
+    	  $("#map tr:eq(3) td:eq('" + j + "')").html(0);
+        }
+	    else {
+	      if ($("#map tr:eq(2) td:eq('" + j + "')").val() == $("#map tr:eq(3) td:eq('" + j + "')").val()) {
+	        $("#map tr:eq(2) td:eq('" + j + "')").html(2*$("#map tr:eq(2) td:eq('" + j + "')").val());
+	        $("#map tr:eq(3) td:eq('" + j + "')").html(0);
+	      }
+	    }
+      }
+    }
+  }
+  xTriggered++;
+  var msg = "Handler for .keydown() called " + xTriggered + " time(s).";
+  $.print( msg, "html" );
+  $.print( event );
+});
+ 
+$( "#other" ).click(function() {
+  $( "#target" ).keydown();
+});
+};</script>
+ 
+
+</body></html>
